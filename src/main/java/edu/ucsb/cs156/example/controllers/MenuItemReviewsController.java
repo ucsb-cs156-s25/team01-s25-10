@@ -76,7 +76,7 @@ public class MenuItemReviewsController extends ApiController{
         // See: https://www.baeldung.com/spring-date-parameters
 
         MenuItemReview menuItemReview = new MenuItemReview();
-        menuItemReview.setItemId(itemID);
+        menuItemReview.setItemID(itemID);
         menuItemReview.setReviewerEmail(reviewerEmail);
         menuItemReview.setStars(stars);
         menuItemReview.setComments(comments);
