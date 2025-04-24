@@ -184,4 +184,78 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase {
         assertEquals("MenuItemReview with id 7 not found", json.get("message"));
     }
 
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_can_edit_an_existing_review() throws Exception {
+        // arrange
+
+        LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+        LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
+
+        MenuItemReview review = MenuItemReview.builder()
+                .itemId(3)
+                .reviewerEmail("mhaghighi04")
+                .stars(2)
+                .comments("mid-food")
+                .build();
+
+        MenuItemReview reviewEdit = MenuItemReview.builder()
+                .itemId(16)
+                .reviewerEmail("joeshmoe23")
+                .stars(5)
+                .comments("str8 buss")
+                .build();
+
+        String requestBody = mapper.writeValueAsString(reviewEdit);
+
+        when(menuItemReviewRepository.findById(eq(67L))).thenReturn(Optional.of(review));
+
+        // act
+        MvcResult response = mockMvc.perform(
+                put("/api/menuitemreviews?id=67")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(requestBody)
+                        .with(csrf()))
+                .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(menuItemReviewRepository, times(1)).findById(67L);
+        verify(menuItemReviewRepository, times(1)).save(reviewEdit); // should be saved with correct user
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(requestBody, responseString);
+    }
+
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_cannot_edit_review_that_does_not_exist() throws Exception {
+        // arrange
+        
+        MenuItemReview reviewEdit = MenuItemReview.builder()
+                .itemId(16)
+                .reviewerEmail("joeshmoe23")
+                .stars(5)
+                .comments("str8 buss")
+                .build();
+
+        String requestBody = mapper.writeValueAsString(reviewEdit);
+
+        when(menuItemReviewRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+        // act
+        MvcResult response = mockMvc.perform(
+                put("/api/menuitemreviews?id=67")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("utf-8")
+                        .content(requestBody)
+                        .with(csrf()))
+                .andExpect(status().isNotFound()).andReturn();
+
+        // assert
+        verify(menuItemReviewRepository, times(1)).findById(67L);
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("MenuItemReview with id 67 not found", json.get("message"));
+
+    }
+
 }
