@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-10
 owner: ucsb-cs156-s25
 repo_name: team01-s25-10
-pull_requests: [{"author":{"id":"U_kgDOB_9cTw","is_bot":false,"login":"andrewc512","name":"Andrew Chen"},"headRefName":"ac-UCSBDiningCommonsMenuItem-create-db","number":43,"title":"ac - create database table for UCSBDiningCommonsMenuItems","url":"https://github.com/ucsb-cs156-s25/team01-s25-10/pull/43"}]
+pull_requests: [{"author":{"id":"U_kgDOCM75PA","is_bot":false,"login":"mHaghighi04","name":""},"headRefName":"Milad-MenuReview","number":44,"title":"mh - create database table for menu item reviews","url":"https://github.com/ucsb-cs156-s25/team01-s25-10/pull/44"},{"author":{"id":"U_kgDOB_9cTw","is_bot":false,"login":"andrewc512","name":"Andrew Chen"},"headRefName":"ac-UCSBDiningCommonsMenuItem-create-db","number":43,"title":"ac - create database table for UCSBDiningCommonsMenuItems","url":"https://github.com/ucsb-cs156-s25/team01-s25-10/pull/43"}]
