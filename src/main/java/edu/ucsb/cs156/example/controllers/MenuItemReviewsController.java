@@ -36,16 +36,16 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/menuitemreviews")
 @RestController
 @Slf4j
-public class MenuItemReviewsController extends ApiController{
+public class MenuItemReviewsController extends ApiController {
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
-    
+
     /**
      * List all menu item reviews
      * 
      * @return an iterable of MenuItemReviews
      */
-    @Operation(summary= "List all ucsb reviews")
+    @Operation(summary = "List all ucsb reviews")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<MenuItemReview> allMenuItemReviews() {
@@ -56,20 +56,20 @@ public class MenuItemReviewsController extends ApiController{
     /**
      * Create a new review
      * 
-     * @param itemId  the food ID
+     * @param itemId        the food ID
      * @param reviewerEmail email of the reviewer
-     * @param stars the rating
-     * @param comments the comment
+     * @param stars         the rating
+     * @param comments      the comment
      * @return the saved menuitemreview
      */
-    @Operation(summary= "Create a new review")
+    @Operation(summary = "Create a new review")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public MenuItemReview postMenuItemReview(
-            @Parameter(name="itemId") @RequestParam long itemId,
-            @Parameter(name="reviewerEmail") @RequestParam String reviewerEmail,
-            @Parameter(name="stars") @RequestParam long stars,
-            @Parameter(name="comments") @RequestParam String comments)
+            @Parameter(name = "itemId") @RequestParam long itemId,
+            @Parameter(name = "reviewerEmail") @RequestParam String reviewerEmail,
+            @Parameter(name = "stars") @RequestParam long stars,
+            @Parameter(name = "comments") @RequestParam String comments)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -81,10 +81,25 @@ public class MenuItemReviewsController extends ApiController{
         menuItemReview.setStars(stars);
         menuItemReview.setComments(comments);
 
-        
-
         MenuItemReview savedReview = menuItemReviewRepository.save(menuItemReview);
 
         return savedReview;
+    }
+
+    /**
+     * Get a single review by id
+     * 
+     * @param id the id of the date
+     * @return a MenuItemReview
+     */
+    @Operation(summary = "Get a single review")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public MenuItemReview getById(
+            @Parameter(name = "id") @RequestParam Long id) {
+        MenuItemReview review = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+        return review;
     }
 }
