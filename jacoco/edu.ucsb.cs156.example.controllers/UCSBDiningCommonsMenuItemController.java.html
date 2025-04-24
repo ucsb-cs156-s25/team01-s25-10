@@ -43,7 +43,7 @@ import java.time.LocalDateTime;
      * 
      * @return an iterable of UCSBDiningCommonsMenuItem
      */
-    @Operation(summary= &quot;List all ucsb dining commons menu items&quot;)
+    @Operation(summary= &quot;List all UCSBDiningCommonsMenuItems&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/all&quot;)
     public Iterable&lt;UCSBDiningCommonsMenuItem&gt; allUCSBDiningCommonsMenuItems() {
