@@ -43,7 +43,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
      * 
      * @return an iterable of UCSBDiningCommonsMenuItem
      */
-    @Operation(summary= "List all ucsb dining commons menu items")
+    @Operation(summary= "List all UCSBDiningCommonsMenuItems")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBDiningCommonsMenuItem> allUCSBDiningCommonsMenuItems() {
