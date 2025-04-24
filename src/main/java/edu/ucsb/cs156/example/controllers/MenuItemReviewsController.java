@@ -45,7 +45,7 @@ public class MenuItemReviewsController extends ApiController{
      * 
      * @return an iterable of MenuItemReviews
      */
-    @Operation(summary= "List all ucsb dates")
+    @Operation(summary= "List all ucsb reviews")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<MenuItemReview> allMenuItemReviews() {
@@ -56,7 +56,7 @@ public class MenuItemReviewsController extends ApiController{
     /**
      * Create a new review
      * 
-     * @param itemID  the food ID
+     * @param itemId  the food ID
      * @param reviewerEmail email of the reviewer
      * @param stars the rating
      * @param comments the comment
@@ -66,7 +66,7 @@ public class MenuItemReviewsController extends ApiController{
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public MenuItemReview postMenuItemReview(
-            @Parameter(name="itemID") @RequestParam long itemID,
+            @Parameter(name="itemId") @RequestParam long itemId,
             @Parameter(name="reviewerEmail") @RequestParam String reviewerEmail,
             @Parameter(name="stars") @RequestParam long stars,
             @Parameter(name="comments") @RequestParam String comments)
@@ -76,7 +76,7 @@ public class MenuItemReviewsController extends ApiController{
         // See: https://www.baeldung.com/spring-date-parameters
 
         MenuItemReview menuItemReview = new MenuItemReview();
-        menuItemReview.setItemID(itemID);
+        menuItemReview.setItemId(itemId);
         menuItemReview.setReviewerEmail(reviewerEmail);
         menuItemReview.setStars(stars);
         menuItemReview.setComments(comments);

@@ -80,7 +80,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase{
                 LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
 
                 MenuItemReview review1 = MenuItemReview.builder()
-                .itemID(3)
+                .itemId(3)
                 .reviewerEmail("mhaghighi04")
                 .stars(2)
                 .comments("mid food")
@@ -113,7 +113,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase{
                 // arrange
 
                 MenuItemReview review1 = MenuItemReview.builder()
-                .itemID(3)
+                .itemId(3)
                 .reviewerEmail("mhaghighi04")
                 .stars(2)
                 .comments("mid-food")
@@ -123,7 +123,7 @@ public class MenuItemReviewsControllerTests extends ControllerTestCase{
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/menuitemreviews/post?itemID=3&reviewerEmail=mhaghighi04&stars=2&comments=mid-food")
+                                post("/api/menuitemreviews/post?itemId=3&reviewerEmail=mhaghighi04&stars=2&comments=mid-food")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
