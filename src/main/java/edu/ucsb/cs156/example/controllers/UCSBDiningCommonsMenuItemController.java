@@ -94,6 +94,24 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
     }
 
     /**
+     * Delete a UCSBDiningCommonsMenuItem
+     * 
+     * @param id the id of the UCSBDiningCommonsMenuItem to delete
+     * @return a message indicating the UCSBDiningCommonsMenuItem was deleted
+     */
+    @Operation(summary= "Delete a UCSBDiningCommonsMenuItem")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteUCSBDiningCommonsMenuItem(
+            @Parameter(name="id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonsMenuItem);
+        return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
+    }
+
+    /**
      * Update a single UCSBDiningCommonsMenuItem
      * 
      * @param id       id of the UCSBDiningCommonsMenuItem to update
