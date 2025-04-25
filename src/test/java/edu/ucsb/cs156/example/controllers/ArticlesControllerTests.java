@@ -254,4 +254,63 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 assertEquals(expectedJson, responseString);
         }
 
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_delete_existing_ucsbarticle() throws Exception {
+        // arrange
+                Long id = 123L;
+
+                UCSBArticles article = UCSBArticles.builder()
+                        .id(id)
+                        .title("Sample Title")
+                        .url("https://example.com")
+                        .explanation("Sample Explanation")
+                        .email("sample@example.com")
+                        .localDateTime(LocalDateTime.now())
+                        .build();
+
+                when(ucsbArticlesRepository.findById(id)).thenReturn(Optional.of(article));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                        delete("/api/ucsbarticles?id=" + id)
+                                .with(csrf()))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+                // assert
+                verify(ucsbArticlesRepository, times(1)).findById(id);
+                verify(ucsbArticlesRepository, times(1)).delete(article);
+
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("UCSBArticles with id 123 deleted", json.get("message"));
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_delete_nonexistent_ucsbarticle() throws Exception {
+        // arrange
+                Long id = 123L;
+
+                when(ucsbArticlesRepository.findById(id)).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                        delete("/api/ucsbarticles?id=" + id)
+                                .with(csrf()))
+                        .andExpect(status().isNotFound())
+                        .andReturn();
+
+                // assert
+                verify(ucsbArticlesRepository, times(1)).findById(id);
+
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("EntityNotFoundException", json.get("type"));
+                assertEquals("UCSBArticles with id 123 not found", json.get("message"));
+        }
+
+
+
+
 }
