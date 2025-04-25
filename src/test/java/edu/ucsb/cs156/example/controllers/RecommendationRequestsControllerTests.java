@@ -137,8 +137,5 @@ public class RecommendationRequestsControllerTests extends ControllerTestCase{
             String expectedJson = mapper.writeValueAsString(request1);
             String responseString = response.getResponse().getContentAsString();
             assertEquals(expectedJson, responseString);
-
-            RecommendationRequest actual = mapper.readValue(responseString, RecommendationRequest.class);
-            assertEquals(false, actual.isDone());
     }
 }
