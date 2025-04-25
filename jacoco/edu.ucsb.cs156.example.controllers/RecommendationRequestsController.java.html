@@ -34,8 +34,8 @@ import java.time.LocalDateTime;
 @Tag(name = &quot;RecommendationRequests&quot;)
 @RequestMapping(&quot;/api/recommendationrequests&quot;)
 @RestController
-<span class="nc" id="L37">@Slf4j</span>
-<span class="nc" id="L38">public class RecommendationRequestsController extends ApiController{</span>
+<span class="fc" id="L37">@Slf4j</span>
+<span class="fc" id="L38">public class RecommendationRequestsController extends ApiController{</span>
 
     @Autowired
     RecommendationRequestRepository recommendationRequestRepository;
@@ -49,8 +49,8 @@ import java.time.LocalDateTime;
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/all&quot;)
     public Iterable&lt;RecommendationRequest&gt; allRecommendationRequests() {
-<span class="nc" id="L52">        Iterable&lt;RecommendationRequest&gt; requests = recommendationRequestRepository.findAll();</span>
-<span class="nc" id="L53">        return requests;</span>
+<span class="fc" id="L52">        Iterable&lt;RecommendationRequest&gt; requests = recommendationRequestRepository.findAll();</span>
+<span class="fc" id="L53">        return requests;</span>
     }
 
     /**
