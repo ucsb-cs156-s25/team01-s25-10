@@ -32,4 +32,8 @@ public class RecommendationRequest {
   private LocalDateTime dateRequested;
   private LocalDateTime dateNeeded;
   private boolean done;
+
+  public boolean isDone(){
+    return done;
+  }
 }
