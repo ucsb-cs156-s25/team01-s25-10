@@ -101,10 +101,13 @@ public class RecommendationRequestsController extends ApiController{
      * @return a RecommendationRequest
      */
     @Operation(summary = "Get a single recommendation request")
-    @PreAuthorize("hasRole('Role_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
-    public Commit getById(
-        @parameter(name = "id") @RequestParam Long id) {
-            UCSBDate ucsbDate = 
-        }
+    public RecommendationRequest getById(
+            @Parameter(name = "id") @RequestParam Long id) {
+        RecommendationRequest request = recommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        return request;
+    }
 }
