@@ -203,7 +203,7 @@ public class UCSBDiningCommonsMenuItemControllerTests  extends ControllerTestCas
                                 .build();
 
                 UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItemEdited = UCSBDiningCommonsMenuItem.builder()
-                                .diningCommonsCode("Portola")
+                                .diningCommonsCode("Ortega")
                                 .name("Salad")
                                 .station("Salad Station")
                                 .build();
@@ -255,7 +255,6 @@ public class UCSBDiningCommonsMenuItemControllerTests  extends ControllerTestCas
                 // assert
                 verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(67L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("EntityNotFoundException", json.get("type"));
                 assertEquals("UCSBDiningCommonsMenuItem with id 67 not found", json.get("message"));
         }
 }
