@@ -254,6 +254,43 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 assertEquals(expectedJson, responseString);
         }
 
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_update_nonexistent_ucsbarticle() throws Exception {
+        // arrange
+                Long id = 123L;
+
+                UCSBArticles incomingArticle = UCSBArticles.builder()
+                        .title("Updated Title")
+                        .url("https://example.com/updated")
+                        .explanation("Updated Explanation")
+                        .email("updated@example.com")
+                        .localDateTime(LocalDateTime.now())
+                        .build();
+
+                when(ucsbArticlesRepository.findById(id)).thenReturn(Optional.empty());
+
+                String requestBody = mapper.writeValueAsString(incomingArticle);
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/ucsbarticles?id=" + id)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .characterEncoding("utf-8")
+                                        .content(requestBody)
+                                        .with(csrf()))
+                        .andExpect(status().isNotFound())
+                        .andReturn();
+
+                // assert
+                verify(ucsbArticlesRepository, times(1)).findById(id);
+
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("EntityNotFoundException", json.get("type"));
+                assertEquals("UCSBArticles with id 123 not found", json.get("message"));
+        }
+
+
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
