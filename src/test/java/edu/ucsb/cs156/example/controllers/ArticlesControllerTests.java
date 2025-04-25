@@ -201,4 +201,57 @@ public class ArticlesControllerTests extends ControllerTestCase {
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void an_admin_user_can_edit_an_existing_ucsbarticle() throws Exception {
+                // arrange
+                Long id = 3L;
+
+                LocalDateTime originalDateTime = LocalDateTime.parse("2022-01-03T00:00:00");
+                LocalDateTime updatedDateTime = LocalDateTime.parse("2022-04-25T12:00:00");
+
+                UCSBArticles originalArticle = UCSBArticles.builder()
+                        .id(id)
+                        .title("Original Title")
+                        .url("https://example.com/original")
+                        .explanation("Original Explanation")
+                        .email("original@example.com")
+                        .localDateTime(originalDateTime)
+                        .build();
+
+                UCSBArticles updatedArticle = UCSBArticles.builder()
+                        .id(id)
+                        .title("Updated Title")
+                        .url("https://example.com/updated")
+                        .explanation("Updated Explanation")
+                        .email("updated@example.com")
+                        .localDateTime(updatedDateTime)
+                        .build();
+
+                when(ucsbArticlesRepository.findById(id)).thenReturn(Optional.of(originalArticle));
+                when(ucsbArticlesRepository.save(any(UCSBArticles.class))).thenReturn(updatedArticle);
+
+                String requestBody = mapper.writeValueAsString(updatedArticle);
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/ucsbarticles?id=" + id)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .characterEncoding("utf-8")
+                                        .content(requestBody)
+                                        .with(csrf()))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+                // assert
+                verify(ucsbArticlesRepository, times(1)).findById(id);
+                verify(ucsbArticlesRepository, times(1)).save(any(UCSBArticles.class));
+
+                String responseString = response.getResponse().getContentAsString();
+                String expectedJson = mapper.writeValueAsString(updatedArticle);
+
+                assertEquals(expectedJson, responseString);
+        }
+
 }

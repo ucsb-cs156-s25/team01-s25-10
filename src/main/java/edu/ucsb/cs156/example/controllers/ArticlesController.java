@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.UCSBArticles;
+import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.UCSBArticlesRepository;
 
@@ -96,5 +97,34 @@ public class ArticlesController extends ApiController {
         UCSBArticles savedUcsbArticle = ucsbArticlesRepository.save(ucsbArticle);
 
         return savedUcsbArticle;
+    }
+
+     /**
+     * Update a single date
+     * private String title;
+        private String url;
+        private String explanation;
+        private String email;
+        private LocalDateTime localDateTime;
+     */
+    @Operation(summary= "Update a single article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBArticles updateUCSBArticles(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid UCSBArticles incoming) {
+
+            UCSBArticles ucsbArticle = ucsbArticlesRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBArticles.class, id));
+
+        ucsbArticle.setTitle(incoming.getTitle());
+        ucsbArticle.setUrl(incoming.getUrl());
+        ucsbArticle.setExplanation(incoming.getExplanation());
+        ucsbArticle.setEmail(incoming.getEmail());
+        ucsbArticle.setLocalDateTime(incoming.getLocalDateTime());
+
+        ucsbArticlesRepository.save(ucsbArticle);
+
+        return ucsbArticle;
     }
 }
