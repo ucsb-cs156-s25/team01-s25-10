@@ -27,6 +27,8 @@ import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
 
+import org.apache.logging.log4j.message.ReusableMessage;
+
 /**
  * This is a REST controller for RecommendationRequests
  */
@@ -107,6 +109,35 @@ public class RecommendationRequestsController extends ApiController{
             @Parameter(name = "id") @RequestParam Long id) {
         RecommendationRequest request = recommendationRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        return request;
+    }
+
+    /**
+     * Update a single recommendation request
+     * 
+     * @param id       id of the date to update
+     * @param incoming the new recommendation request
+     * @return the updated request object
+     */
+    @Operation(summary= "Update a single recommendation request")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public RecommendationRequest updateRecommendationRequest(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid RecommendationRequest incoming) {
+
+        RecommendationRequest request = recommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        request.setRequesterEmail(incoming.getRequesterEmail());
+        request.setProfessorEmail(incoming.getProfessorEmail());
+        request.setExplanation(incoming.getExplanation());
+        request.setDateRequested(incoming.getDateRequested());
+        request.setDateNeeded(incoming.getDateNeeded());
+        request.setDone(incoming.getDone());
+
+        recommendationRequestRepository.save(request);
 
         return request;
     }
