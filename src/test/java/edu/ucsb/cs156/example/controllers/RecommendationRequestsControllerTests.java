@@ -73,7 +73,7 @@ public class RecommendationRequestsControllerTests extends ControllerTestCase{
 
     @WithMockUser(roles = { "USER" })
     @Test
-    public void logged_in_user_can_get_all_ucsbdates() throws Exception {
+    public void logged_in_user_can_get_all_recommendationrequests() throws Exception {
 
             // arrange
             LocalDateTime ldt1 = LocalDateTime.parse("2025-01-03T00:00:00");
@@ -106,31 +106,36 @@ public class RecommendationRequestsControllerTests extends ControllerTestCase{
             assertEquals(expectedJson, responseString);
     }
 
-//     @WithMockUser(roles = { "ADMIN", "USER" })
-//     @Test
-//     public void an_admin_user_can_post_a_new_ucsbdate() throws Exception {
-//             // arrange
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void an_admin_user_can_post_a_new_recommendationrequest() throws Exception {
+            // arrange
 
-//             LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+            LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+            LocalDateTime ldt2 = LocalDateTime.parse("2025-01-03T00:00:00");
 
-//             UCSBDate ucsbDate1 = UCSBDate.builder()
-//                             .name("firstDayOfClasses")
-//                             .quarterYYYYQ("20222")
-//                             .localDateTime(ldt1)
-//                             .build();
+            RecommendationRequest request1 = RecommendationRequest.builder()
+                .requesterEmail("mihirkondapalli@ucsb.edu")
+                .professorEmail("pconrad@ucsb.edu")
+                .explanation("Test")
+                .dateRequested(ldt1)
+                .dateNeeded(ldt2)
+                .done(false)
+                .build();
 
-//             when(ucsbDateRepository.save(eq(ucsbDate1))).thenReturn(ucsbDate1);
+            when(recommendationRequestRepository.save(eq(request1))).thenReturn(request1);
 
-//             // act
-//             MvcResult response = mockMvc.perform(
-//                             post("/api/ucsbdates/post?name=firstDayOfClasses&quarterYYYYQ=20222&localDateTime=2022-01-03T00:00:00")
-//                                             .with(csrf()))
-//                             .andExpect(status().isOk()).andReturn();
+            // act
+            MvcResult response = mockMvc.perform(
+                            post("/api/recommendationrequests/post?requesterEmail=mihirkondapalli@ucsb.edu&professorEmail=pconrad@ucsb.edu&"
+                                + "explanation=Test&dateRequested=2022-01-03T00:00:00&dateNeeded=2025-01-03T00:00:00&done=false")
+                                            .with(csrf()))
+                            .andExpect(status().isOk()).andReturn();
 
-//             // assert
-//             verify(ucsbDateRepository, times(1)).save(ucsbDate1);
-//             String expectedJson = mapper.writeValueAsString(ucsbDate1);
-//             String responseString = response.getResponse().getContentAsString();
-//             assertEquals(expectedJson, responseString);
-//     }
+            // assert
+            verify(recommendationRequestRepository, times(1)).save(eq(request1));
+            String expectedJson = mapper.writeValueAsString(request1);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+    }
 }
