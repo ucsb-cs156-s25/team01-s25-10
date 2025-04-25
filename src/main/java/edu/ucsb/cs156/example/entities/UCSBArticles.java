@@ -26,7 +26,7 @@ public class UCSBArticles {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-
+  
   private String title;
   private String url;
   private String explanation;
