@@ -189,7 +189,6 @@ public class RecommendationRequestsControllerTests extends ControllerTestCase{
                         .andExpect(status().isOk()).andReturn();
 
         // assert
-
         verify(recommendationRequestRepository, times(1)).findById(eq(7L));
         String expectedJson = mapper.writeValueAsString(request1);
         String responseString = response.getResponse().getContentAsString();
