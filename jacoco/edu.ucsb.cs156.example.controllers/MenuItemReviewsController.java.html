@@ -36,16 +36,16 @@ import java.time.LocalDateTime;
 @RequestMapping(&quot;/api/menuitemreviews&quot;)
 @RestController
 <span class="fc" id="L38">@Slf4j</span>
-<span class="fc" id="L39">public class MenuItemReviewsController extends ApiController{</span>
+<span class="fc" id="L39">public class MenuItemReviewsController extends ApiController {</span>
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
-    
+
     /**
      * List all menu item reviews
      * 
      * @return an iterable of MenuItemReviews
      */
-    @Operation(summary= &quot;List all ucsb reviews&quot;)
+    @Operation(summary = &quot;List all ucsb reviews&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;/all&quot;)
     public Iterable&lt;MenuItemReview&gt; allMenuItemReviews() {
@@ -56,20 +56,20 @@ import java.time.LocalDateTime;
     /**
      * Create a new review
      * 
-     * @param itemId  the food ID
+     * @param itemId        the food ID
      * @param reviewerEmail email of the reviewer
-     * @param stars the rating
-     * @param comments the comment
+     * @param stars         the rating
+     * @param comments      the comment
      * @return the saved menuitemreview
      */
-    @Operation(summary= &quot;Create a new review&quot;)
+    @Operation(summary = &quot;Create a new review&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
     @PostMapping(&quot;/post&quot;)
     public MenuItemReview postMenuItemReview(
-            @Parameter(name=&quot;itemId&quot;) @RequestParam long itemId,
-            @Parameter(name=&quot;reviewerEmail&quot;) @RequestParam String reviewerEmail,
-            @Parameter(name=&quot;stars&quot;) @RequestParam long stars,
-            @Parameter(name=&quot;comments&quot;) @RequestParam String comments)
+            @Parameter(name = &quot;itemId&quot;) @RequestParam long itemId,
+            @Parameter(name = &quot;reviewerEmail&quot;) @RequestParam String reviewerEmail,
+            @Parameter(name = &quot;stars&quot;) @RequestParam long stars,
+            @Parameter(name = &quot;comments&quot;) @RequestParam String comments)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -81,11 +81,26 @@ import java.time.LocalDateTime;
 <span class="fc" id="L81">        menuItemReview.setStars(stars);</span>
 <span class="fc" id="L82">        menuItemReview.setComments(comments);</span>
 
-        
+<span class="fc" id="L84">        MenuItemReview savedReview = menuItemReviewRepository.save(menuItemReview);</span>
 
-<span class="fc" id="L86">        MenuItemReview savedReview = menuItemReviewRepository.save(menuItemReview);</span>
+<span class="fc" id="L86">        return savedReview;</span>
+    }
 
-<span class="fc" id="L88">        return savedReview;</span>
+    /**
+     * Get a single review by id
+     * 
+     * @param id the id of the date
+     * @return a MenuItemReview
+     */
+    @Operation(summary = &quot;Get a single review&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public MenuItemReview getById(
+            @Parameter(name = &quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L100">        MenuItemReview review = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L101">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+
+<span class="fc" id="L103">        return review;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
