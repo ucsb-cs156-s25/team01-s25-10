@@ -1,0 +1,80 @@
+{
+    "databaseChangeLog": [
+      {
+        "changeSet": {
+          "id": "HelpRequests-1",
+          "author": "matthewzhang275",
+          "preConditions": [
+            {
+              "onFail": "MARK_RAN"
+            },
+            {
+              "not": [
+                {
+                  "tableExists": {
+                    "tableName": "HelpRequests"
+                  }
+                }
+              ]
+            }
+          ],
+          "changes": [
+            {
+              "createTable": {
+                "columns": [
+                  {
+                    "column": {
+                      "name": "id",
+                      "type": "BIGINT",
+                      "autoIncrement": true,
+                      "constraints": {
+                        "primaryKey": true,
+                        "primaryKeyName": "HelpRequests_PK"
+                      }
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "requester_email",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "team_id",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "table_or_breakout_room",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "request_time",
+                      "type": "TIMESTAMP"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "explanation",
+                      "type": "VARCHAR(1000)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "solved",
+                      "type": "BOOLEAN"
+                    }
+                  }
+                ],
+                "tableName": "HELPREQUESTS"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
