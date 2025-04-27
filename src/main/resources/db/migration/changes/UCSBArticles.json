@@ -1,0 +1,74 @@
+{
+    "databaseChangeLog": [
+      {
+        "changeSet": {
+          "id": "UCSBArticles-1",
+          "author": "JunjieL",
+          "preConditions": [
+            {
+              "onFail": "MARK_RAN"
+            },
+            {
+              "not": [
+                {
+                  "tableExists": {
+                    "tableName": "UCSBARTICLES"
+                  }
+                }
+              ]
+            }
+          ],
+          "changes": [
+            {
+              "createTable": {
+                "columns": [
+                  {
+                    "column": {
+                      "autoIncrement": true,
+                      "constraints": {
+                        "primaryKey": true,
+                        "primaryKeyName": "UCSBARTICLES_PK"
+                      },
+                      "name": "ID",
+                      "type": "BIGINT"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "TITLE",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "URL",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "EXPLANATION",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "EMAIL",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "LOCAL_DATE_TIME",
+                      "type": "TIMESTAMP"
+                    }
+                  }                
+                ],
+                "tableName": "UCSBARTICLES"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
